@@ -29,5 +29,5 @@ model Product {
   content String?
   price Float
   owner User @relation(fields: [ownerId], references: [id])
-  ownerId Int
+ ownerId Int
 }

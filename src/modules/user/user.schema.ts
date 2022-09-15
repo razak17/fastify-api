@@ -6,13 +6,19 @@ const userCore = {
 	name: z.string({ required_error: 'name is required' }).min(2, 'username must be at least 2 characters long')
 };
 
+const userCreated = {
+	id: z.number(),
+	createdAt: z.string(),
+	updatedAt: z.string()
+};
+
 const createUserSchema = z.object({
 	...userCore,
 	password: z.string({ required_error: 'password is required' })
 });
 
 const createUserResponseSchema = z.object({
-	id: z.number(),
+	...userCreated,
 	...userCore
 });
 

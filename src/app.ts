@@ -1,7 +1,9 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import fjwt, { JWT } from '@fastify/jwt';
 import userRoutes from './modules/user/user.route';
+import productRoutes from './modules/product/product.route';
 import { userSchemas } from './modules/user/user.schema';
+import { productSchemas } from './modules/product/product.schema';
 
 const server = Fastify({ logger: true });
 
@@ -40,11 +42,12 @@ server.decorate('authenticate', async (request: FastifyRequest, reply: FastifyRe
 
 server.get('/health', async () => ({ status: 'OK' }));
 
-for (const schema of [...userSchemas]) {
+for (const schema of [...userSchemas, ...productSchemas]) {
 	server.addSchema(schema);
 }
 
 server.register(userRoutes, { prefix: '/api/users' });
+server.register(productRoutes, { prefix: 'api/products' });
 
 server.listen({ port: 3000, host: '0.0.0.0' }, function (err) {
 	if (err) {

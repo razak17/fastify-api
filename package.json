@@ -18,6 +18,7 @@
 		"@typescript-eslint/parser": "^5.37.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint_d": "^12.2.0",
+		"fastify-zod": "^0.0.2",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^4.8.3"
 	},
@@ -27,7 +28,6 @@
 		"fastify": "^4.5.3",
 		"fastify-jwt": "^4.2.0",
 		"fastify-swagger": "^5.2.0",
-		"fastify-zod": "^1.1.0",
 		"helmet": "^6.0.0",
 		"zod": "^3.19.1",
 		"zod-to-json-schema": "^3.17.1"
