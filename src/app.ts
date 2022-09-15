@@ -1,16 +1,21 @@
 import Fastify from 'fastify';
 import userRoutes from './modules/user/user.route';
+import { userSchemas } from './modules/user/user.schema';
 
-const fastify = Fastify({ logger: true });
+const server = Fastify({ logger: true });
 
-fastify.get('/health', async () => ({ status: 'OK' }));
+server.get('/health', async () => ({ status: 'OK' }));
 
-fastify.register(userRoutes, { prefix: '/api/users' });
+for (const schema of [...userSchemas]) {
+	server.addSchema(schema);
+}
 
-fastify.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
+server.register(userRoutes, { prefix: '/api/users' });
+
+server.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
 	if (err) {
-		fastify.log.error(err);
+		server.log.error(err);
 		process.exit(1);
 	}
-	fastify.log.info(`server listening on ${address}`);
+	server.log.info(`server listening on ${address}`);
 });
