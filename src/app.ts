@@ -1,13 +1,9 @@
 import Fastify from 'fastify';
 import userRoutes from './modules/user/user.route';
 
-const fastify = Fastify({
-	logger: true
-});
+const fastify = Fastify({ logger: true });
 
-fastify.get('/health', async (request, reply) => {
-	return { status: 'OK' };
-});
+fastify.get('/health', async () => ({ status: 'OK' }));
 
 fastify.register(userRoutes, { prefix: '/api/users' });
 
