@@ -1,32 +1,15 @@
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
-import fjwt, { JWT } from '@fastify/jwt';
+import fjwt from '@fastify/jwt';
+import swagger from '@fastify/swagger';
+import { withRefResolver } from 'fastify-zod';
+
 import userRoutes from './modules/user/user.route';
 import productRoutes from './modules/product/product.route';
 import { userSchemas } from './modules/user/user.schema';
 import { productSchemas } from './modules/product/product.schema';
+import { version } from '../package.json';
 
 const server = Fastify({ logger: true });
-
-declare module 'fastify' {
-	/* eslint-disable-next-line no-unused-vars */
-	interface FastifyRequest {
-		jwt: JWT;
-	}
-	export interface FastifyInstance {
-		authenticate: any;
-	}
-}
-
-declare module '@fastify/jwt' {
-	/* eslint-disable-next-line no-unused-vars */
-	interface FastifyJWT {
-		user: {
-			id: number;
-			email: string;
-			name: string;
-		};
-	}
-}
 
 server.register(fjwt, {
 	secret: 'thequickbrownfoxjumpsoverthelazydog'
@@ -45,6 +28,22 @@ server.get('/health', async () => ({ status: 'OK' }));
 for (const schema of [...userSchemas, ...productSchemas]) {
 	server.addSchema(schema);
 }
+
+server.register(
+	swagger,
+	withRefResolver({
+		routePrefix: '/docs',
+		exposeRoute: true,
+		staticCSP: true,
+		openapi: {
+			info: {
+				title: 'Fastify API',
+				description: 'API for some products',
+				version
+			}
+		}
+	})
+);
 
 server.register(userRoutes, { prefix: '/api/users' });
 server.register(productRoutes, { prefix: 'api/products' });
