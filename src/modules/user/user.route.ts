@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { registerUserHandler } from './user.conntroller';
 
-const userRoutes = (server: FastifyInstance) => {
+const userRoutes = async (server: FastifyInstance) => {
 	server.post('/', registerUserHandler);
 };
 
