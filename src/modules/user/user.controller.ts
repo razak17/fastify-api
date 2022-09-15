@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateUserInput, LoginInput } from './user.schema';
-import { createUser, findUserByEmail } from './user.service';
+import { createUser, findUserByEmail, findUsers } from './user.service';
 import { verifyPassword } from '../../utils/hash';
 
 export async function registerUserHandler(
@@ -55,3 +55,9 @@ export async function loginHandler(
 		message: 'Invalid email or password'
 	});
 }
+export async function getUsersHandler() {
+  const users = await findUsers();
+
+  return users;
+}
+
